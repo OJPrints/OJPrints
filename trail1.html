@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OJ PRINTS user functionalities</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            align-items: center;
+            background-color: aquamarine;
+            
+        }
+
+        #toggleDiv {
+            width: 100px;
+            height: 100px;
+            background-color: lightcoral;
+            display: block;
+        }
+
+        #dragItem {
+            width: 90px;
+            height: 100px;
+            background-color: lightblue;
+            cursor: move;
+        }
+
+        #dropZone {
+            width: 100px;
+            height: 200px;
+            border: 2px dashed black;
+        }
+        .counter{
+            background-color: white;
+            padding: 2rem;
+            width: 8rem;
+            border-radius: 10px;
+            align-items: center;
+            align-self: center;
+            margin-bottom: 2rem;
+        }
+        .counter1{
+            background-color: white;
+            padding: 4rem;
+            width: 8rem;
+            border-radius: 10px;
+            align-items: center;
+            align-self: center;
+            margin-bottom: 2rem;
+        }
+
+
+    </style>
+</head>
+<body>
+    <center>
+    <!-- Click Counter -->
+    <section  class="counter">
+        <h2>Click Counter</h2>
+        <button id="counterButton">Click Me</button>
+    </section></center>
+
+    <!-- Change Text Color -->
+    <center>
+    
+    <section class="counter">
+        <h2>Change My Color Please</h2>
+        <p id="textParagraph">Click me to change my color!</p>
+    </section></center>
+
+    <!-- Show/Hide Element -->
+    <center>
+    <section class="counter">
+        <h2>Show/Hide Element</h2>
+        <div id="toggleDiv">OJ you are awesome!</div>
+        <button id="toggleButton">Toggle Visibility</button>
+    </section></center>
+
+    <!-- Image Swap -->
+    <center>
+    <section class="counter1">
+        <h2>Image Swap</h2>
+        <img id="image" src="received_2562139500803547.jpeg" alt="Image" style="width: 150px;">
+    </section></center>
+
+    <!-- Form Validation -->
+    <center>
+    <section class="counter1">
+        <h2>Form Validation</h2>
+        <form id="myForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name"><br><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email"><br><br>
+            <button type="submit">Submit</button>
+        </form>
+        <p id="errorMessage" style="color: red;"></p>
+    </section></center>
+
+    <!-- Dynamic List -->
+    <center>
+    <section class="counter1">
+        <h2>Dynamic List</h2>
+        <input type="text" id="itemInput" placeholder="Enter item">
+        <button id="addButton">Add to List</button>
+        <ul id="itemList"></ul>
+    </section></center>
+
+    <!-- Countdown Timer -->
+    <center>
+    <section class="counter">
+        <h2>Countdown Timer</h2>
+        <div id="timer">10</div>
+    </section></center>
+
+    <!-- Drag and Drop -->
+    <center>
+    <section class="counter">
+        <h2>Drag and Drop</h2>
+        <div id="dragItem" draggable="true">Drag me</div>
+        <div id="dropZone">Drop here</div>
+    </section></center>
+
+    <script>
+        // 1. Click Counter
+        let clickCount = 0;
+        const counterButton = document.getElementById('counterButton');
+        counterButton.addEventListener('click', () => {
+            clickCount++;
+            alert(`Button clicked ${clickCount} times`);
+        });
+
+        // 2. Change Text Color
+        const textParagraph = document.getElementById('textParagraph');
+        textParagraph.addEventListener('click', () => {
+            textParagraph.style.color = 'blue';
+        });
+
+        // 3. Show/Hide Element
+        const toggleDiv = document.getElementById('toggleDiv');
+        const toggleButton = document.getElementById('toggleButton');
+        toggleButton.addEventListener('click', () => {
+            toggleDiv.style.display = toggleDiv.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // 4. Image Swap
+        const image = document.getElementById('image');
+        image.addEventListener('click', () => {
+            image.src = image.src.includes('image1.jpg') ? 'image2.jpg' : 'image1.jpg';
+        });
+
+        // 5. Form Validation
+        const myForm = document.getElementById('myForm');
+        const errorMessage = document.getElementById('errorMessage');
+        myForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            if (!name) {
+                errorMessage.textContent = 'Name cannot be empty.';
+                return;
+            }
+            if (!email.includes('@')) {
+                errorMessage.textContent = 'Email must contain @.';
+                return;
+            }
+            errorMessage.textContent = '';
+            alert('Form submitted successfully!');
+        });
+
+        // 6. Dynamic List
+        const addButton = document.getElementById('addButton');
+        const itemInput = document.getElementById('itemInput');
+        const itemList = document.getElementById('itemList');
+        addButton.addEventListener('click', () => {
+            const itemText = itemInput.value.trim();
+            if (itemText) {
+                const li = document.createElement('li');
+                li.textContent = itemText;
+                itemList.appendChild(li);
+                itemInput.value = '';
+            }
+        });
+
+        // 7. Countdown Timer
+        let count = 10;
+        const timerDiv = document.getElementById('timer');
+        const interval = setInterval(() => {
+            if (count > 0) {
+                count--;
+                timerDiv.textContent = count;
+            } else {
+                clearInterval(interval);
+                timerDiv.textContent = 'Time’s up!';
+            }
+        }, 1000);
+
+        // 8. Drag and Drop
+        const dragItem = document.getElementById('dragItem');
+        const dropZone = document.getElementById('dropZone');
+        dragItem.addEventListener('dragstart', (event) => {
+            event.dataTransfer.setData('text', 'dragItem');
+        });
+        dropZone.addEventListener('dragover', (event) => {
+            event.preventDefault();
+        });
+        dropZone.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dropZone.appendChild(dragItem);
+        });
+    </script>
+</body>
+</html>
